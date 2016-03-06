@@ -1,0 +1,881 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Intro2r by AlyceRussell</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Intro2r</h1>
+        <p>A Light Introduction to R</p>
+
+        <p class="view"><a href="https://github.com/AlyceRussell/Intro2R">View the Project on GitHub <small>AlyceRussell/Intro2R</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/AlyceRussell/Intro2R/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/AlyceRussell/Intro2R/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/AlyceRussell/Intro2R">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>Today's workshop will focus on learning the basics in R, so that you may apply this to your own projects in the future. </p>
+
+<h3>
+<a id="learning-objectives" class="anchor" href="#learning-objectives" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Learning Objectives</h3>
+
+<ul>
+<li>To gain familiarity with the various panes in RStudio </li>
+<li>To learn some of the basics of the R language</li>
+<li>To explore some of the various data types and structures</li>
+<li>To acquire experience with importing, exporting and manipulating data </li>
+<li>To develop an appreciation for the various R packages and functions</li>
+</ul>
+
+<hr>
+
+<h3>
+<a id="what-is-r" class="anchor" href="#what-is-r" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is R?</h3>
+
+<p>R is an environment and language for performing data mining as well as statistical analyses.</p>
+
+<ul>
+<li>It is an expressive language</li>
+<li>Can perform simple analyses or write complex programs</li>
+<li>Highly extensive repositiory of packages available (see <a href="https://cran.r-project.org/web/packages/">https://cran.r-project.org/web/packages/</a> for full packages)</li>
+<li>There are numerous publicly available real world datasets<br>
+</li>
+</ul>
+
+<p>R also possesses highly sophistocated graphics capabilities...</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c">#install.packages("plot3D")</span>
+library(<span class="pl-smi">plot3D</span>)
+
+par(<span class="pl-v">mfrow</span> <span class="pl-k">=</span> c(<span class="pl-c1">2</span>, <span class="pl-c1">2</span>), <span class="pl-v">mar</span> <span class="pl-k">=</span> c(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">0</span>))
+
+<span class="pl-c"># Shape 1</span>
+<span class="pl-smi">M</span> <span class="pl-k">&lt;-</span> mesh(seq(<span class="pl-c1">0</span>, <span class="pl-c1">6</span><span class="pl-k">*</span><span class="pl-c1">pi</span>, <span class="pl-v">length.out</span> <span class="pl-k">=</span> <span class="pl-c1">80</span>),
+seq(<span class="pl-c1">pi</span><span class="pl-k">/</span><span class="pl-c1">3</span>, <span class="pl-c1">pi</span>, <span class="pl-v">length.out</span> <span class="pl-k">=</span> <span class="pl-c1">80</span>))
+<span class="pl-smi">u</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">x</span> ; <span class="pl-smi">v</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">y</span>
+<span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">u</span><span class="pl-k">/</span><span class="pl-c1">2</span> <span class="pl-k">*</span> sin(<span class="pl-smi">v</span>) <span class="pl-k">*</span> cos(<span class="pl-smi">u</span>)
+<span class="pl-smi">y</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">u</span><span class="pl-k">/</span><span class="pl-c1">2</span> <span class="pl-k">*</span> sin(<span class="pl-smi">v</span>) <span class="pl-k">*</span> sin(<span class="pl-smi">u</span>)
+<span class="pl-smi">z</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">u</span><span class="pl-k">/</span><span class="pl-c1">2</span> <span class="pl-k">*</span> cos(<span class="pl-smi">v</span>)
+surf3D(<span class="pl-smi">x</span>, <span class="pl-smi">y</span>, <span class="pl-smi">z</span>, <span class="pl-v">colvar</span> <span class="pl-k">=</span> <span class="pl-smi">z</span>, <span class="pl-v">colkey</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>, <span class="pl-v">box</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)
+
+<span class="pl-c"># Shape 2: add border</span>
+<span class="pl-smi">M</span> <span class="pl-k">&lt;-</span> mesh(seq(<span class="pl-c1">0</span>, <span class="pl-c1">2</span><span class="pl-k">*</span><span class="pl-c1">pi</span>, <span class="pl-v">length.out</span> <span class="pl-k">=</span> <span class="pl-c1">80</span>),
+seq(<span class="pl-c1">0</span>, <span class="pl-c1">2</span><span class="pl-k">*</span><span class="pl-c1">pi</span>, <span class="pl-v">length.out</span> <span class="pl-k">=</span> <span class="pl-c1">80</span>))
+<span class="pl-smi">u</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">x</span> ; <span class="pl-smi">v</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">y</span>
+<span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> sin(<span class="pl-smi">u</span>)
+<span class="pl-smi">y</span> <span class="pl-k">&lt;-</span> sin(<span class="pl-smi">v</span>)
+<span class="pl-smi">z</span> <span class="pl-k">&lt;-</span> sin(<span class="pl-smi">u</span> <span class="pl-k">+</span> <span class="pl-smi">v</span>)
+surf3D(<span class="pl-smi">x</span>, <span class="pl-smi">y</span>, <span class="pl-smi">z</span>, <span class="pl-v">colvar</span> <span class="pl-k">=</span> <span class="pl-smi">z</span>, <span class="pl-v">border</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>black<span class="pl-pds">"</span></span>, <span class="pl-v">colkey</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)
+
+<span class="pl-c"># shape 3: uses same mesh, white facets</span>
+<span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> (<span class="pl-c1">3</span> <span class="pl-k">+</span> cos(<span class="pl-smi">v</span><span class="pl-k">/</span><span class="pl-c1">2</span>)<span class="pl-k">*</span>sin(<span class="pl-smi">u</span>) <span class="pl-k">-</span> sin(<span class="pl-smi">v</span><span class="pl-k">/</span><span class="pl-c1">2</span>)<span class="pl-k">*</span>sin(<span class="pl-c1">2</span><span class="pl-k">*</span><span class="pl-smi">u</span>))<span class="pl-k">*</span>cos(<span class="pl-smi">v</span>)
+<span class="pl-smi">y</span> <span class="pl-k">&lt;-</span> (<span class="pl-c1">3</span> <span class="pl-k">+</span> cos(<span class="pl-smi">v</span><span class="pl-k">/</span><span class="pl-c1">2</span>)<span class="pl-k">*</span>sin(<span class="pl-smi">u</span>) <span class="pl-k">-</span> sin(<span class="pl-smi">v</span><span class="pl-k">/</span><span class="pl-c1">2</span>)<span class="pl-k">*</span>sin(<span class="pl-c1">2</span><span class="pl-k">*</span><span class="pl-smi">u</span>))<span class="pl-k">*</span>sin(<span class="pl-smi">v</span>)
+<span class="pl-smi">z</span> <span class="pl-k">&lt;-</span> sin(<span class="pl-smi">v</span><span class="pl-k">/</span><span class="pl-c1">2</span>)<span class="pl-k">*</span>sin(<span class="pl-smi">u</span>) <span class="pl-k">+</span> cos(<span class="pl-smi">v</span><span class="pl-k">/</span><span class="pl-c1">2</span>)<span class="pl-k">*</span>sin(<span class="pl-c1">2</span><span class="pl-k">*</span><span class="pl-smi">u</span>)
+surf3D(<span class="pl-smi">x</span>, <span class="pl-smi">y</span>, <span class="pl-smi">z</span>, <span class="pl-v">colvar</span> <span class="pl-k">=</span> <span class="pl-smi">z</span>, <span class="pl-v">colkey</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>, <span class="pl-v">facets</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)
+
+<span class="pl-c"># shape 4: more complex colvar</span>
+<span class="pl-smi">M</span> <span class="pl-k">&lt;-</span> mesh(seq(<span class="pl-k">-</span><span class="pl-c1">13.2</span>, <span class="pl-c1">13.2</span>, <span class="pl-v">length.out</span> <span class="pl-k">=</span> <span class="pl-c1">50</span>),
+seq(<span class="pl-k">-</span><span class="pl-c1">37.4</span>, <span class="pl-c1">37.4</span>, <span class="pl-v">length.out</span> <span class="pl-k">=</span> <span class="pl-c1">50</span>))
+<span class="pl-smi">u</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">x</span> ; <span class="pl-smi">v</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">y</span>
+<span class="pl-smi">b</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">0.4</span>; <span class="pl-smi">r</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">1</span> <span class="pl-k">-</span> <span class="pl-smi">b</span><span class="pl-k">^</span><span class="pl-c1">2</span>; <span class="pl-smi">w</span> <span class="pl-k">&lt;-</span> sqrt(<span class="pl-smi">r</span>)
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">b</span><span class="pl-k">*</span>((<span class="pl-smi">w</span><span class="pl-k">*</span>cosh(<span class="pl-smi">b</span><span class="pl-k">*</span><span class="pl-smi">u</span>))<span class="pl-k">^</span><span class="pl-c1">2</span> <span class="pl-k">+</span> (<span class="pl-smi">b</span><span class="pl-k">*</span>sin(<span class="pl-smi">w</span><span class="pl-k">*</span><span class="pl-smi">v</span>))<span class="pl-k">^</span><span class="pl-c1">2</span>)
+<span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> <span class="pl-k">-</span><span class="pl-smi">u</span> <span class="pl-k">+</span> (<span class="pl-c1">2</span><span class="pl-k">*</span><span class="pl-smi">r</span><span class="pl-k">*</span>cosh(<span class="pl-smi">b</span><span class="pl-k">*</span><span class="pl-smi">u</span>)<span class="pl-k">*</span>sinh(<span class="pl-smi">b</span><span class="pl-k">*</span><span class="pl-smi">u</span>)) <span class="pl-k">/</span> <span class="pl-smi">D</span>
+<span class="pl-smi">y</span> <span class="pl-k">&lt;-</span> (<span class="pl-c1">2</span><span class="pl-k">*</span><span class="pl-smi">w</span><span class="pl-k">*</span>cosh(<span class="pl-smi">b</span><span class="pl-k">*</span><span class="pl-smi">u</span>)<span class="pl-k">*</span>(<span class="pl-k">-</span>(<span class="pl-smi">w</span><span class="pl-k">*</span>cos(<span class="pl-smi">v</span>)<span class="pl-k">*</span>cos(<span class="pl-smi">w</span><span class="pl-k">*</span><span class="pl-smi">v</span>)) <span class="pl-k">-</span> sin(<span class="pl-smi">v</span>)<span class="pl-k">*</span>sin(<span class="pl-smi">w</span><span class="pl-k">*</span><span class="pl-smi">v</span>))) <span class="pl-k">/</span> <span class="pl-smi">D</span>
+<span class="pl-smi">z</span> <span class="pl-k">&lt;-</span> (<span class="pl-c1">2</span><span class="pl-k">*</span><span class="pl-smi">w</span><span class="pl-k">*</span>cosh(<span class="pl-smi">b</span><span class="pl-k">*</span><span class="pl-smi">u</span>)<span class="pl-k">*</span>(<span class="pl-k">-</span>(<span class="pl-smi">w</span><span class="pl-k">*</span>sin(<span class="pl-smi">v</span>)<span class="pl-k">*</span>cos(<span class="pl-smi">w</span><span class="pl-k">*</span><span class="pl-smi">v</span>)) <span class="pl-k">+</span> cos(<span class="pl-smi">v</span>)<span class="pl-k">*</span>sin(<span class="pl-smi">w</span><span class="pl-k">*</span><span class="pl-smi">v</span>))) <span class="pl-k">/</span> <span class="pl-smi">D</span>
+surf3D(<span class="pl-smi">x</span>, <span class="pl-smi">y</span>, <span class="pl-smi">z</span>, <span class="pl-v">colvar</span> <span class="pl-k">=</span> sqrt(<span class="pl-smi">x</span> <span class="pl-k">+</span> <span class="pl-c1">8.3</span>), <span class="pl-v">colkey</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
+<span class="pl-v">border</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>black<span class="pl-pds">"</span></span>, <span class="pl-v">box</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)</pre></div>
+
+<p><em>Code to produce these figures are found in the documentation for the <code>Plot3D</code> package.</em></p>
+
+<h4>
+<a id="datasets" class="anchor" href="#datasets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Datasets</h4>
+
+<ul>
+<li>Many packages come with embedded datasets to practise the given analyses.</li>
+<li>There is a <code>Datasets</code> package available. More details on its datasets can be found at <a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html">https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html</a>
+</li>
+</ul>
+
+<hr>
+
+<h3>
+<a id="downloading-and-installing-r-and-rstudio" class="anchor" href="#downloading-and-installing-r-and-rstudio" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Downloading and Installing R and RStudio</h3>
+
+<h4>
+<a id="windows-os" class="anchor" href="#windows-os" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Windows OS</h4>
+
+<p><strong>R</strong></p>
+
+<ul>
+<li>Download the latest version of R from  <a href="http://cran.r-project.org/bin/windows/base/">http://cran.r-project.org/bin/windows/base/</a>
+</li>
+<li>Run the .exe file and follow the steps</li>
+</ul>
+
+<p><strong>RStudio</strong></p>
+
+<ul>
+<li>Download RStudio from <a href="http://rstudio.org/download/desktop">http://rstudio.org/download/desktop</a>
+</li>
+<li>Run the .exe file and follow the steps</li>
+</ul>
+
+<h4>
+<a id="mac-os" class="anchor" href="#mac-os" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mac OS</h4>
+
+<p><strong>R</strong></p>
+
+<ul>
+<li>Download the latest version of R from <a href="http://cran.r-project.org/bin/macosx/">http://cran.r-project.org/bin/macosx/</a>
+</li>
+<li>Open the .pkg file and follow the steps</li>
+</ul>
+
+<p><strong>RStudio</strong></p>
+
+<ul>
+<li>Download RStudio from <a href="http://rstudio.org/download/desktop">http://rstudio.org/download/desktop</a>
+</li>
+<li>Run the .dmg file and follow the steps</li>
+</ul>
+
+<hr>
+
+<h3>
+<a id="rstudio" class="anchor" href="#rstudio" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>RStudio</h3>
+
+<p>Throughout this workshop, we will be using RStudio: a free, open source R integrated development
+environment.</p>
+
+<p>The advantage of RStudio is that it's user friendly, particularly to those who do not have a
+computer science background (myself included!). </p>
+
+<h4>
+<a id="basic-layout" class="anchor" href="#basic-layout" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic Layout</h4>
+
+<p>When you first open RStudio, you will be greeted by three panels:</p>
+
+<ul>
+<li>The interactive R console (entire left)</li>
+<li>Workspace/History (tabbed in upper right)</li>
+<li>Files/Plots/Packages/Help (tabbed in lower right)</li>
+</ul>
+
+<p>Once you open files, such as R scripts, an editor panel will also open
+in the top left.</p>
+
+<h4>
+<a id="executing-commands" class="anchor" href="#executing-commands" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Executing Commands</h4>
+
+<p>There are a few ways you can execute commands in RStudio. You can run code from the current line by:</p>
+
+<ol>
+<li>clicking the "Run" key in the top right corner of the editor panel</li>
+<li>going to "Code" menu then "Run Line(s)"</li>
+<li>hit <code>Ctrl+Enter</code> in Windows or Linux OS, or <code>Command+Enter</code> in Mac OS</li>
+<li>hit <code>Ctrl+R</code> in Windows OS</li>
+</ol>
+
+<p>You can also highlight a code chunk and use the above options.</p>
+
+<h4>
+<a id="accessing-help" class="anchor" href="#accessing-help" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Accessing Help</h4>
+
+<ul>
+<li>Type '?keyword' in the console panel if the package is loaded. For example, ?sum or ?plot</li>
+<li>Type '??keyword' in the console panel if the package/function is unknown</li>
+<li>Type 'help(keyword) in the console panel. For example, help(sum) or help(plot)</li>
+<li>In RStudio, go to the help menu then R help, type in keywords to see options</li>
+</ul>
+
+<h4>
+<a id="the-infamous-working-directory" class="anchor" href="#the-infamous-working-directory" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Infamous Working Directory</h4>
+
+<p>The working directory is where you import files from and export files to when using R.</p>
+
+<p>To find your current working directory at anytime... </p>
+
+<div class="highlight highlight-source-r"><pre>getwd()</pre></div>
+
+<p>Now you need to create a folder named "R_Intro" on your Desktop for this workshop session. You can then change your working directory to this folder using... </p>
+
+<div class="highlight highlight-source-r"><pre>setwd(<span class="pl-s"><span class="pl-pds">"</span>C:/Users/aruss_000/Desktop/R_Intro<span class="pl-pds">"</span></span>)</pre></div>
+
+<blockquote>
+<p>Did you notice that we've had to change the direction of the slashes to forward facing rather than reverse facing??</p>
+</blockquote>
+
+<p>You can find the folder pathway to insert into the above function by right clicking the folder icon on your Desktop, clicking Properties, and finding the path for the Location on the General tab. You can do this for any folder on your computer that you wish to use as your working directory. </p>
+
+<h4>
+<a id="navigation" class="anchor" href="#navigation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Navigation</h4>
+
+<ul>
+<li>Use the up and down arrows in the interactive R console (bottom left) to scroll through and even edit previous commands.</li>
+<li>Use <code>Ctrl+L</code> in Windows (or <code>Alt+88+L</code> in Mac) to clear the console.</li>
+</ul>
+
+<h4>
+<a id="starting-a-new-script" class="anchor" href="#starting-a-new-script" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Starting a New Script</h4>
+
+<p>Record all your tasks on an <em>R Script</em>, including comments for each of your steps so that you may refer back to them later on (especially good when you are new to R and relying on online documentation). You can add comments to a function or assignment using the <code>#</code> key. Anything right of this key is ignored by the editor panel. </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">q</span> <span class="pl-k">&lt;-</span> c(<span class="pl-c1">2</span>, <span class="pl-c1">5</span>, <span class="pl-c1">4</span>, <span class="pl-c1">7</span>, <span class="pl-c1">1</span>, <span class="pl-c1">8</span>, <span class="pl-c1">10</span>)
+<span class="pl-smi">t</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">3</span><span class="pl-k">*</span><span class="pl-smi">q</span>  <span class="pl-c">#multiply all values in q vector by 3</span>
+<span class="pl-smi">t</span></pre></div>
+
+<p>You should always start your script with a purpose/title and the date. The <code>#</code> key is useful for this as well.</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c">#######################</span>
+<span class="pl-c">#</span>
+<span class="pl-c">#  EDA on DASS dataset</span>
+<span class="pl-c">#</span>
+<span class="pl-c">#  Created: 22/02/2016</span>
+<span class="pl-c">#</span>
+<span class="pl-c">#  Updated: 29/02/2016</span>
+<span class="pl-c">#</span>
+<span class="pl-c">#######################</span></pre></div>
+
+<hr>
+
+<h3>
+<a id="r-language-basics" class="anchor" href="#r-language-basics" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>R Language Basics</h3>
+
+<h4>
+<a id="assignment" class="anchor" href="#assignment" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Assignment</h4>
+
+<p>One of the most important things you will learn in R is the assignment of a dataset/matrix/vector/value/character to a variable of your choosing. For assignment you can use either "=" or "&lt;-", though I personally prefer to use "&lt;-" for assignment and "=" when you're running a logical argument (more on that later). </p>
+
+<p>R can be thought of as a sophisticated calculated as well as programming environment. For example, you can assign values to variables and then use these in equations you assign to new variables, as follows...</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">a</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">1</span>
+<span class="pl-smi">b</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">2</span>
+<span class="pl-smi">c</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">a</span> <span class="pl-k">+</span> <span class="pl-smi">b</span>
+<span class="pl-smi">c</span></pre></div>
+
+<blockquote>
+<p>NOTE: R is case sensitive, thus "Hey", "HEY" and "hEY" will be considered as different variables within the R environment. Use CamelCase to write all your variables and avoid confusion!!</p>
+</blockquote>
+
+<h4>
+<a id="rs-view-on-space" class="anchor" href="#rs-view-on-space" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>R's view on Space</h4>
+
+<p>R does not recognise spaces in sentences. The following are equivalent...</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">a1</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">2</span> <span class="pl-k">+</span> <span class="pl-c1">2</span>
+<span class="pl-smi">a2</span><span class="pl-k">&lt;-</span><span class="pl-c1">2</span><span class="pl-k">+</span><span class="pl-c1">2</span>
+<span class="pl-smi">a1</span>
+<span class="pl-smi">a2</span></pre></div>
+
+<p>In saying this, all R variables need to contain no spaces. This is why CamelCase is useful. You can also use other symbols, such as <code>_</code> or <code>.</code>, in your variable name. </p>
+
+<p>The key is to choose variable names that aren't too laborious when typing, intuitive to the information they contain and aren't too confusing when compared with other variables in your current R environment (so you don't accidently include the wrong variable in your analysis).</p>
+
+<p>In some cases, an assignment needs to be made over a few lines. For this, you can press <code>Enter</code> during the command and it will take you to a new but indented line, as shown in the below plot code.</p>
+
+<div class="highlight highlight-source-r"><pre>dev.off()   <span class="pl-c">#resets plotting settings from first image</span></pre></div>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">q</span> <span class="pl-k">&lt;-</span> c(<span class="pl-c1">2</span>, <span class="pl-c1">5</span>, <span class="pl-c1">4</span>, <span class="pl-c1">7</span>, <span class="pl-c1">1</span>, <span class="pl-c1">8</span>, <span class="pl-c1">10</span>)
+<span class="pl-smi">w</span> <span class="pl-k">&lt;-</span> c(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>, <span class="pl-c1">3</span>, <span class="pl-c1">4</span>, <span class="pl-c1">5</span>, <span class="pl-c1">6</span>, <span class="pl-c1">7</span>)
+plot(<span class="pl-smi">q</span>, <span class="pl-smi">w</span>, <span class="pl-v">main</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>Example Plot<span class="pl-pds">"</span></span>,
+     <span class="pl-v">type</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>b<span class="pl-pds">"</span></span>, <span class="pl-v">col</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>pink<span class="pl-pds">"</span></span>, <span class="pl-v">lwd</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>5<span class="pl-pds">"</span></span>)</pre></div>
+
+<h4>
+<a id="some-final-pointers" class="anchor" href="#some-final-pointers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Some Final Pointers</h4>
+
+<p>Assignment should never be made to a variable that is also a name of a standard function (for example, sum or sd or max).</p>
+
+<p>You can assign the last value or expression to a new variable using the <code>.Last.value</code> function.</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">z</span> <span class="pl-k">&lt;-</span> .<span class="pl-smi">Last.value</span></pre></div>
+
+<hr>
+
+<h3>
+<a id="r-as-a-giant-calculator" class="anchor" href="#r-as-a-giant-calculator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>R as a Giant Calculator</h3>
+
+<p>Before we look at some examples using R as a calculator, we need to first explore the arithmetic and logical operators it uses.</p>
+
+<h4>
+<a id="arithmetic-operations" class="anchor" href="#arithmetic-operations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Arithmetic Operations</h4>
+
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+</td>
+<td>Addition</td>
+</tr>
+<tr>
+<td>-</td>
+<td>Subtraction</td>
+</tr>
+<tr>
+<td>*</td>
+<td>Multiplication</td>
+</tr>
+<tr>
+<td>/</td>
+<td>Divide</td>
+</tr>
+<tr>
+<td>^</td>
+<td>Exponentiation</td>
+</tr>
+</tbody>
+</table>
+
+<p>Below are some examples of the above operators...</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c1">2</span> <span class="pl-k">+</span> <span class="pl-c1">3</span>
+<span class="pl-c1">20</span> <span class="pl-k">-</span> <span class="pl-c1">13</span>
+<span class="pl-c1">2</span> <span class="pl-k">*</span> <span class="pl-c1">3</span> 
+<span class="pl-c1">6</span> <span class="pl-k">/</span> <span class="pl-c1">3</span>
+<span class="pl-c1">2</span><span class="pl-k">^</span><span class="pl-c1">2</span></pre></div>
+
+<p>It is important to note that R acts like other calculators, in that there is an order of operations. You can use the term <strong>PIMDAS</strong> to remember this order...</p>
+
+<ul>
+<li>
+<strong>P</strong>arentheses (i.e. brackets)</li>
+<li>
+<strong>I</strong>ndices (i.e. exponents)</li>
+<li>
+<strong>M</strong>ultiplication</li>
+<li>
+<strong>D</strong>ivision</li>
+<li>
+<strong>A</strong>ddition</li>
+<li>
+<strong>S</strong>ubtraction</li>
+</ul>
+
+<p>Utilise the parentheses to force the order of operations. See below for an example of this (they don't give the same answer).</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c1">5</span><span class="pl-k">*</span><span class="pl-c1">2</span><span class="pl-k">+</span><span class="pl-c1">3</span><span class="pl-k">/</span><span class="pl-c1">8</span>
+<span class="pl-c1">5</span><span class="pl-k">*</span>(<span class="pl-c1">2</span><span class="pl-k">+</span><span class="pl-c1">3</span>)<span class="pl-k">/</span><span class="pl-c1">8</span></pre></div>
+
+<h4>
+<a id="logical-operations" class="anchor" href="#logical-operations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Logical Operations</h4>
+
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>==</td>
+<td>Equals</td>
+</tr>
+<tr>
+<td>!=</td>
+<td>Not equal to</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>Less than</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>Greater than</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>Less than or equal to</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>Greater than or equal to</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td>And</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>!</td>
+<td>Not</td>
+</tr>
+</tbody>
+</table>
+
+<p>Below are some examples of the above operators...</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c1">2</span> <span class="pl-k">==</span> <span class="pl-c1">3</span>
+<span class="pl-c1">2</span> <span class="pl-k">+</span> <span class="pl-c1">3</span> <span class="pl-k">==</span> <span class="pl-c1">4</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>
+<span class="pl-c1">2</span> <span class="pl-k">!=</span> <span class="pl-c1">3</span>
+<span class="pl-c1">2</span> <span class="pl-k">&lt;</span> <span class="pl-c1">3</span>
+<span class="pl-c1">2</span> <span class="pl-k">&gt;</span> <span class="pl-c1">3</span>
+<span class="pl-c1">4</span> <span class="pl-k">&lt;</span><span class="pl-k">=</span> <span class="pl-c1">8</span>
+<span class="pl-c1">4</span> <span class="pl-k">&gt;</span><span class="pl-k">=</span> <span class="pl-c1">8</span>
+<span class="pl-c1">2</span> <span class="pl-k">&lt;</span> <span class="pl-c1">3</span> <span class="pl-k">&amp;</span> <span class="pl-c1">8</span> <span class="pl-k">&gt;</span> <span class="pl-c1">4</span>
+<span class="pl-c1">2</span> <span class="pl-k">&gt;</span> <span class="pl-c1">3</span> <span class="pl-k">|</span> <span class="pl-c1">4</span> <span class="pl-k">&lt;</span> <span class="pl-c1">8</span>
+<span class="pl-smi">d</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">3</span>
+<span class="pl-k">!</span><span class="pl-smi">d</span> <span class="pl-k">&gt;</span> <span class="pl-c1">3</span></pre></div>
+
+<blockquote>
+<p>NOTE: Logical functions are great in large datasets when you are checking your data (i.e. any values less than an arbitary cut-off, missing values, etc...).</p>
+</blockquote>
+
+<h4>
+<a id="mathematical-functions" class="anchor" href="#mathematical-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mathematical Functions</h4>
+
+<p>Below are some mathematical function you will come across during the workshop or may be of use to you. There are many others available in R. You can explore these </p>
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sin/cos/tan(x)</td>
+<td>Sine, Cosine, Tangent</td>
+</tr>
+<tr>
+<td>asin, acos, atan(x)</td>
+<td>Inverse of Sine, Cosine, Tangent</td>
+</tr>
+<tr>
+<td>log(x)</td>
+<td>Logarithm of base e</td>
+</tr>
+<tr>
+<td>log2(x), log10(x)</td>
+<td>Logarithm of base 2 or 10</td>
+</tr>
+<tr>
+<td>exp(x)</td>
+<td>Exponential</td>
+</tr>
+<tr>
+<td>round(x, digits=0)</td>
+<td>Rounding a number to 0 decimals</td>
+</tr>
+<tr>
+<td>signif(x, digits=3)</td>
+<td>Rounding a number to 3 significant digits</td>
+</tr>
+<tr>
+<td>sqrt(x)</td>
+<td>Squareroot</td>
+</tr>
+<tr>
+<td>factorial(x)</td>
+<td>Calculates factorial of a given number</td>
+</tr>
+<tr>
+<td>choose(n, k)</td>
+<td>Returns number of combinations, <em>k</em> elements from <em>n</em> possibilities</td>
+</tr>
+<tr>
+<td>abs(x)</td>
+<td>Returns absolute value of <em>x</em>
+</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="scientific-notation" class="anchor" href="#scientific-notation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scientific Notation</h4>
+
+<p>Really small or large numbers use scientific notation, and R presents this in a certain way. You can either write a scientific notation as 2e-3 or 2*10^(-3): both will give you the same answer but one is easier to read and write.</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c1">3</span><span class="pl-k">/</span><span class="pl-c1">40000</span>
+<span class="pl-c1">5000000000</span>
+
+<span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">1300000</span>
+<span class="pl-c1">5e-2</span>
+<span class="pl-c1">6e4</span></pre></div>
+
+<hr>
+
+<h3>
+<a id="data-types-in-r" class="anchor" href="#data-types-in-r" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data Types in R</h3>
+
+<p>Data in R is not exclusively numeric; there are a number of different types of data.</p>
+
+<ul>
+<li>Numeric
+
+<ul>
+<li>Integer (2, 5, ...)</li>
+<li>Double (1.3, -2.56, ...)</li>
+<li>Complex (a square root of a negative number, i.e. contains imaginary numbers)</li>
+<li>Logical (0 or 1 as a result from a test)</li>
+</ul>
+</li>
+<li>Character ("John", "This is some code", ...)
+
+<ul>
+<li>Date/Time (Sep 1, 2012, 24/3/2013, January 5 2009, ...)</li>
+</ul>
+</li>
+<li>Factor (SES may have "Low", "Middle", "High"; or Likert on questionnaire "1", "2", "3", "4", "5")</li>
+</ul>
+
+<p>You can test for and even convert the data type using typeof() and as.xxxx(), where "xxxx" can be "numeric", "factor", "double", "integer", "complex", "character", "logical".</p>
+
+<h4>
+<a id="data-conversions" class="anchor" href="#data-conversions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data Conversions</h4>
+
+<table>
+<thead>
+<tr>
+<th>Converting from...</th>
+<th>Converting to...</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Integer</td>
+<td>Double/Complex</td>
+<td>Number is maintained when back to Integer</td>
+</tr>
+<tr>
+<td>Double</td>
+<td>Integer</td>
+<td>Decimal is lost</td>
+</tr>
+<tr>
+<td>Double</td>
+<td>Complex</td>
+<td>Number is maintained when back to Double</td>
+</tr>
+<tr>
+<td>Complex</td>
+<td>Double/Integer</td>
+<td>Imaginary part is lost</td>
+</tr>
+<tr>
+<td>Double/Integer</td>
+<td>Logical</td>
+<td>Value TRUE is returned for everything except 0, which is FALSE</td>
+</tr>
+<tr>
+<td>Logical</td>
+<td>Double/Integer</td>
+<td>Value of 0 for FALSE and 1 for TRUE</td>
+</tr>
+<tr>
+<td>Anything</td>
+<td>Factor</td>
+<td>Becomes Factor levels of variable</td>
+</tr>
+<tr>
+<td>Character</td>
+<td>Numeric</td>
+<td>Only if characters are numbers, otherwise returns NA</td>
+</tr>
+</tbody>
+</table>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">a</span> <span class="pl-k">&lt;-</span> c(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>, <span class="pl-c1">3</span>, <span class="pl-c1">4</span>, <span class="pl-c1">5</span>)
+typeof(<span class="pl-smi">a</span>)  <span class="pl-c">#double is default for numbers</span>
+<span class="pl-smi">b</span> <span class="pl-k">&lt;-</span> as.integer(<span class="pl-smi">a</span>)  <span class="pl-c">#converts double into integer</span>
+typeof(<span class="pl-smi">b</span>)
+<span class="pl-smi">c</span> <span class="pl-k">&lt;-</span> as.factor(<span class="pl-smi">a</span>)  <span class="pl-c">#converts integer into factor</span>
+typeof(<span class="pl-smi">c</span>)  
+levels(<span class="pl-smi">c</span>)  <span class="pl-c">#calls levels of a factor</span></pre></div>
+
+<hr>
+
+<h3>
+<a id="data-structures-in-r" class="anchor" href="#data-structures-in-r" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data Structures in R</h3>
+
+<p>There are a number of different data structures in R, which include:</p>
+
+<ul>
+<li>Scalers/Variables (0-dimensional)</li>
+<li>Vectors (1-dimensional)</li>
+<li>Matrices (2-dimensional)</li>
+<li>Arrays (n-dimensional)</li>
+<li>Data frames (Standard in datasets)</li>
+<li>Lists </li>
+</ul>
+
+<p>You can assign any of these data structures to a variable and perform a number of tasks. I will only introduce you to some basic operations with these structures today. </p>
+
+<p><strong>Vectors</strong></p>
+
+<p>Vectors are a string of values greater than 1, and there are a number of ways to generate vectors.</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">v1</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">3</span>  <span class="pl-c">#assign single value, as a scaler/variable example</span>
+<span class="pl-smi">v1</span>
+<span class="pl-smi">v2</span> <span class="pl-k">&lt;-</span> c(<span class="pl-c1">2</span>, <span class="pl-c1">4</span>, <span class="pl-c1">6</span>, <span class="pl-c1">8</span>, <span class="pl-c1">0</span>)  <span class="pl-c">#use c() to assign a number of values</span>
+<span class="pl-smi">v2</span>
+<span class="pl-smi">v3</span> <span class="pl-k">&lt;-</span> c(<span class="pl-c1">2</span><span class="pl-k">*</span><span class="pl-c1">3</span><span class="pl-k">:</span><span class="pl-c1">7</span> <span class="pl-k">-</span> <span class="pl-c1">1</span>)  <span class="pl-c">#assign numbers 1-5 then 8-10.  </span>
+<span class="pl-smi">v3</span>
+<span class="pl-smi">v4</span> <span class="pl-k">&lt;-</span> rep(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">4</span>, <span class="pl-v">times</span><span class="pl-k">=</span><span class="pl-c1">3</span>)  <span class="pl-c">#assign numbers 1-4 3 times</span>
+<span class="pl-smi">v4</span>
+<span class="pl-smi">v5</span> <span class="pl-k">&lt;-</span> rep(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">4</span>, <span class="pl-v">each</span><span class="pl-k">=</span><span class="pl-c1">3</span>)  <span class="pl-c">#assign numbers 1-4, with 3 of each</span>
+<span class="pl-smi">v5</span>
+<span class="pl-smi">v6</span> <span class="pl-k">&lt;-</span> seq(<span class="pl-v">from</span><span class="pl-k">=</span><span class="pl-c1">0</span>, <span class="pl-v">to</span><span class="pl-k">=</span><span class="pl-c1">10</span>, <span class="pl-v">by</span><span class="pl-k">=</span><span class="pl-c1">0.5</span>)  <span class="pl-c">#create number sequence with 0.5 increments... ?seq for more options</span>
+<span class="pl-smi">v6</span>
+<span class="pl-smi">v7</span> <span class="pl-k">&lt;-</span> exp(<span class="pl-smi">v2</span>)  <span class="pl-c">#assign values from previous variable using a mathematical function</span>
+<span class="pl-smi">v7</span>
+<span class="pl-smi">v8</span> <span class="pl-k">&lt;-</span> rnorm(<span class="pl-v">n</span><span class="pl-k">=</span><span class="pl-c1">20</span>, <span class="pl-v">mean</span><span class="pl-k">=</span><span class="pl-c1">0</span>, <span class="pl-v">sd</span><span class="pl-k">=</span><span class="pl-c1">1</span>)  <span class="pl-c">#random sampling from a normal (Gaussian) distribution</span>
+<span class="pl-smi">v8</span>
+<span class="pl-smi">v9</span> <span class="pl-k">&lt;-</span> paste(<span class="pl-s"><span class="pl-pds">"</span>Demo_<span class="pl-pds">"</span></span>, rep(<span class="pl-c1">LETTERS</span>[<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">4</span>], <span class="pl-v">each</span><span class="pl-k">=</span><span class="pl-c1">3</span>), c(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">10</span>), <span class="pl-v">sep</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>)  <span class="pl-c">#sequentially pastes numerous vectors together</span>
+<span class="pl-smi">v9</span></pre></div>
+
+<p>You can also perform a number of tasks using vectors. </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">v</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">v1</span> <span class="pl-k">*</span> <span class="pl-smi">v2</span> <span class="pl-c">#performs element-wise multiplication</span>
+<span class="pl-smi">v</span>
+<span class="pl-smi">u</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">v3</span>[<span class="pl-c1">3</span>] <span class="pl-k">+</span> <span class="pl-smi">v5</span>  <span class="pl-c">#v3[3] subsets element 3 from v3, then adds it element-wise to v5</span>
+<span class="pl-smi">u</span>
+<span class="pl-smi">w</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">v</span> <span class="pl-k">-</span> <span class="pl-smi">u</span>  <span class="pl-c">#u and v are different lengths, v is shorter, so R cycles over v until all of u has been element-wise subtracted</span>
+<span class="pl-smi">w</span>  
+<span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> sum(<span class="pl-smi">v6</span>)  <span class="pl-c">#takes sum of elements in v6</span>
+<span class="pl-smi">x</span>
+<span class="pl-smi">y</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">x</span><span class="pl-k">/</span>length(<span class="pl-smi">v6</span>)  <span class="pl-c">#calculates the mean (sum divided by the length or number of data points)</span>
+<span class="pl-smi">y</span>
+mean(<span class="pl-smi">v6</span>)
+sd(<span class="pl-smi">v6</span>)
+min(<span class="pl-smi">v7</span>)</pre></div>
+
+<p>Now to extend those tasks...</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">qt</span> <span class="pl-k">&lt;-</span> c(<span class="pl-c1">0</span>, .<span class="pl-c1">01</span>, .<span class="pl-c1">025</span>, .<span class="pl-c1">05</span>, .<span class="pl-c1">1</span>, .<span class="pl-c1">25</span>, .<span class="pl-c1">5</span>, .<span class="pl-c1">75</span>, .<span class="pl-c1">9</span>, .<span class="pl-c1">95</span>, .<span class="pl-c1">975</span>, .<span class="pl-c1">99</span>, <span class="pl-c1">1</span>)  <span class="pl-c">#vector of quantiles</span>
+<span class="pl-smi">z</span> <span class="pl-k">&lt;-</span> signif(qnorm(<span class="pl-smi">qt</span>, <span class="pl-c1">0</span>, <span class="pl-c1">1</span>), <span class="pl-c1">3</span>)  <span class="pl-c">#calculates the z-scores of standard normal distribution quantiles, and gives answers to 3 significant figures</span>
+<span class="pl-smi">z</span>
+paste(<span class="pl-s"><span class="pl-pds">"</span>Quantile<span class="pl-pds">"</span></span>, <span class="pl-smi">qt</span>, <span class="pl-s"><span class="pl-pds">"</span>=<span class="pl-pds">"</span></span>, <span class="pl-smi">z</span>, <span class="pl-v">sep</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span>)  <span class="pl-c">#creates vector of quantiles and z-scores</span></pre></div>
+
+<p><strong>Matrices</strong></p>
+
+<p>Matrices are 2-dimensional vectors. Below are some examples of generating matrices in R.</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">a</span> <span class="pl-k">&lt;-</span> <span class="pl-k">matrix</span>(<span class="pl-v">data</span><span class="pl-k">=</span>seq(<span class="pl-c1">1</span>, <span class="pl-c1">42</span>, <span class="pl-v">length</span><span class="pl-k">=</span><span class="pl-c1">21</span>), <span class="pl-v">ncol</span><span class="pl-k">=</span><span class="pl-c1">3</span>)  <span class="pl-c">#creates matrix, 3 columns</span>
+<span class="pl-smi">a</span>
+<span class="pl-smi">b</span> <span class="pl-k">&lt;-</span> <span class="pl-k">matrix</span>(<span class="pl-v">data</span><span class="pl-k">=</span>seq(<span class="pl-c1">1</span>, <span class="pl-c1">42</span>, <span class="pl-v">length</span><span class="pl-k">=</span><span class="pl-c1">21</span>), <span class="pl-v">nrow</span><span class="pl-k">=</span><span class="pl-c1">7</span>, <span class="pl-v">ncol</span><span class="pl-k">=</span><span class="pl-c1">3</span>, <span class="pl-v">byrow</span><span class="pl-k">=</span><span class="pl-c1">TRUE</span>)  <span class="pl-c">#fills matrix by row instead of column</span>
+<span class="pl-smi">b</span>
+<span class="pl-smi">c</span> <span class="pl-k">&lt;-</span> <span class="pl-k">matrix</span>(seq(<span class="pl-c1">1</span>, <span class="pl-c1">42</span>, <span class="pl-v">length</span><span class="pl-k">=</span><span class="pl-c1">21</span>), <span class="pl-c1">7</span>, <span class="pl-c1">3</span>, <span class="pl-c1">TRUE</span>)  <span class="pl-c">#same as previous code with option names omitted - must be in right order</span>
+<span class="pl-smi">c</span>
+<span class="pl-smi">d</span> <span class="pl-k">&lt;-</span> diag(<span class="pl-c1">4</span>)  <span class="pl-c">#creates 4x4 identity matrix</span>
+<span class="pl-smi">d</span></pre></div>
+
+<p>There are many ways of manipulating matrices. </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">a</span>[<span class="pl-c1">1</span>,]  <span class="pl-c">#displays first row of matrix </span>
+<span class="pl-smi">a</span>[,<span class="pl-c1">1</span>]  <span class="pl-c">#displays first column of matrix</span>
+<span class="pl-smi">e</span> <span class="pl-k">&lt;-</span> rbind(<span class="pl-smi">a</span>[<span class="pl-c1">2</span>,], <span class="pl-smi">a</span>[<span class="pl-c1">6</span>,])  <span class="pl-c">#row binds the second and sixth rows of matrix together</span>
+<span class="pl-smi">e</span>
+<span class="pl-smi">f</span> <span class="pl-k">&lt;-</span> cbind(<span class="pl-smi">e</span>, c(<span class="pl-c1">2</span>, <span class="pl-c1">3</span>))  <span class="pl-c">#column binds matrix e with new vector</span>
+<span class="pl-smi">f</span>
+<span class="pl-smi">g</span> <span class="pl-k">&lt;-</span> <span class="pl-k">matrix</span>(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">4</span>, <span class="pl-c1">2</span>)  <span class="pl-c">#creates matrix with 2 rows</span>
+<span class="pl-smi">h</span> <span class="pl-k">&lt;-</span> <span class="pl-k">matrix</span>(<span class="pl-c1">5</span><span class="pl-k">:</span><span class="pl-c1">8</span>, <span class="pl-c1">2</span>)
+<span class="pl-smi">g</span> <span class="pl-k">+</span> <span class="pl-smi">h</span>  <span class="pl-c">#element wise addition</span>
+<span class="pl-smi">g</span> <span class="pl-k">*</span> <span class="pl-smi">h</span>  <span class="pl-c">#element wise multiplication</span>
+<span class="pl-smi">g</span> <span class="pl-k">%*%</span> <span class="pl-smi">h</span>  <span class="pl-c">#matrix multiplication</span>
+<span class="pl-smi">g</span> <span class="pl-k">%o%</span> <span class="pl-smi">h</span>  <span class="pl-c">#outer product</span>
+t(<span class="pl-smi">c</span>)  <span class="pl-c">#transpose matrix</span>
+solve(<span class="pl-smi">g</span>)  <span class="pl-c">#inverse of matrix (must be a square matrix)</span>
+diag(<span class="pl-smi">h</span>)  <span class="pl-c">#shows diagonal elements of matrix (unlike diag(4) in above example, which creates a 4x4 identity matrix)</span>
+nrow(<span class="pl-smi">g</span>)  <span class="pl-c">#number of rows</span>
+ncol(<span class="pl-smi">h</span>)  <span class="pl-c">#number of columns</span>
+rowMeans(<span class="pl-smi">a</span>)  
+rowSums(<span class="pl-smi">a</span>[,<span class="pl-c1">2</span><span class="pl-k">:</span><span class="pl-c1">3</span>])  <span class="pl-c">#sums rows over columns 2 and 3. </span>
+colMeans(<span class="pl-smi">a</span>)
+colSums(<span class="pl-smi">a</span>)</pre></div>
+
+<blockquote>
+<p>NOTE: The basic structure for indexing a matrix/data frame is variable[row, column]. If you want all the rows but are only interested in indexing some of the columns (say, to sum questionnaire results), you leave the row part blank and only tell R which columns you are interested in. You can use the concatenate if need be to select columns not adjacent to each other: e.g. rowSums(x[,c(1, 3:5)]) </p>
+</blockquote>
+
+<p><strong>Data Frames</strong></p>
+
+<p>When you are manipulating your imported datasets, they are more often than not structured as a data frame. In data frames, the observations are the rows and the variables are the columns. You can call out individual/groups of row/s column/s to perform a variety of tasks, which we will look at shortly. </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">ds1</span> <span class="pl-k">&lt;-</span> <span class="pl-k">data.frame</span>(<span class="pl-v">FirstName</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>Steve<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Amy<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>John<span class="pl-pds">"</span></span>), <span class="pl-v">LastName</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>Johnson<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>O'Neil<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Smith<span class="pl-pds">"</span></span>), 
+                  <span class="pl-v">Age</span><span class="pl-k">=</span>c(<span class="pl-c1">20</span>, <span class="pl-c1">23</span>, <span class="pl-c1">19</span>), <span class="pl-v">Gender</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>M<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>M<span class="pl-pds">"</span></span>), <span class="pl-v">CourseID</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>K05<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>M22<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>E04<span class="pl-pds">"</span></span>), 
+                  <span class="pl-v">WAM</span><span class="pl-k">=</span>c(<span class="pl-c1">67</span>, <span class="pl-c1">79</span>, <span class="pl-c1">62</span>))  <span class="pl-c">#creates a data frame</span>
+<span class="pl-smi">ds1</span>
+names(<span class="pl-smi">ds1</span>)  <span class="pl-c">#checking variable (column) names</span>
+<span class="pl-smi">FullName</span> <span class="pl-k">&lt;-</span> paste(<span class="pl-smi">ds1</span><span class="pl-k">$</span><span class="pl-smi">FirstName</span>, <span class="pl-smi">ds1</span><span class="pl-k">$</span><span class="pl-smi">LastName</span>, <span class="pl-v">sep</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span>)  <span class="pl-c">#create new FullName variable</span>
+<span class="pl-smi">ds1</span> <span class="pl-k">&lt;-</span> cbind(<span class="pl-smi">ds1</span>, <span class="pl-smi">FullName</span>)  <span class="pl-c">#column bind new variable to data frame</span>
+names(<span class="pl-smi">ds1</span>)  <span class="pl-c">#checking data frame to see the newly attached FullName variable</span>
+names(<span class="pl-smi">ds1</span>)[<span class="pl-c1">6</span>] <span class="pl-k">&lt;-</span> <span class="pl-s"><span class="pl-pds">"</span>WeightedAverage<span class="pl-pds">"</span></span>  <span class="pl-c">#changes name of 6th variable in the data frame</span>
+nrow(<span class="pl-smi">ds1</span>)  <span class="pl-c">#counts number of rows. Use ncol(ds1) for number of columns. </span>
+dim(<span class="pl-smi">ds1</span>)  <span class="pl-c">#gives row and then column count for data frame</span>
+mean(<span class="pl-smi">ds1</span><span class="pl-k">$</span><span class="pl-smi">WeightedAverage</span>)  <span class="pl-c">#gives mean weighted average mark between students</span>
+<span class="pl-smi">ds1</span>[<span class="pl-c1">1</span>,<span class="pl-c1">6</span>] <span class="pl-k">=</span> <span class="pl-c1">70</span>  <span class="pl-c">#this will index to the individual in row 1's WAM result and update it to 70</span>
+<span class="pl-smi">ds1</span></pre></div>
+
+<blockquote>
+<p>NOTE: When coding a data frame, the columns all have to have the same number of observations. Missing values can be denoted with NA. </p>
+</blockquote>
+
+<p>We will look at some additional tricks with data frames at the end.</p>
+
+<p><strong>Lists</strong></p>
+
+<p>Lists can store information from a number of different vectors of unequal length and different data types. The output of many statistical tests in R are stored in lists and individual parts of the test results can be called out in the same fashion  you call out individual variables in data frames (e.g. ds1$FullName). I will not go into list generation today but you can look it up using <code>?list</code> in the interactive console (bottom left).</p>
+
+<hr>
+
+<h3>
+<a id="working-with-missing-values" class="anchor" href="#working-with-missing-values" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Working with Missing Values</h3>
+
+<p>The R function <code>is.na()</code> can be used to see whether there are any missing values in a dataset/matrix/vector/variable.</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">r</span> <span class="pl-k">&lt;-</span> c(<span class="pl-c1">2</span>, <span class="pl-c1">NA</span>, <span class="pl-c1">4</span>, <span class="pl-c1">6</span>, <span class="pl-c1">8</span>, <span class="pl-c1">10</span>)
+is.na(<span class="pl-smi">r</span>)</pre></div>
+
+<blockquote>
+<p>NOTE: R reads missing values as NA, which is an indication of missingness. </p>
+</blockquote>
+
+<p>You can replace these in functions, for example, using an imputed mean or some other suitable value, or simply remove rows/columns of data that contain missing values (not recommended in the statistics community). </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">m</span> <span class="pl-k">&lt;-</span> as.data.frame(<span class="pl-k">matrix</span>(c(<span class="pl-c1">2</span><span class="pl-k">:</span><span class="pl-c1">6</span>, <span class="pl-c1">NA</span>, <span class="pl-c1">15</span><span class="pl-k">:</span><span class="pl-c1">16</span>, <span class="pl-c1">NA</span>, <span class="pl-c1">17</span>, <span class="pl-c1">22</span>, <span class="pl-c1">10</span>), <span class="pl-v">ncol</span><span class="pl-k">=</span><span class="pl-c1">3</span>))
+<span class="pl-smi">m</span>
+is.na(<span class="pl-smi">m</span>) <span class="pl-c">#will return TRUE or FALSE for each data point</span>
+length(<span class="pl-smi">m</span>[is.na(<span class="pl-smi">m</span>)]<span class="pl-k">==</span><span class="pl-c1">TRUE</span>)  <span class="pl-c">#counts missing values in dataset using a logical argument for the above function</span>
+length(<span class="pl-smi">m</span><span class="pl-k">$</span><span class="pl-smi">v1</span>[is.na(<span class="pl-smi">m</span>)]<span class="pl-k">==</span><span class="pl-c1">TRUE</span>)  <span class="pl-c">#counts missing values in the first column</span>
+mean(<span class="pl-smi">m</span>)  <span class="pl-c">#calculates mean of all values, won't work if missing values exist</span>
+mean(as.matrix(<span class="pl-smi">m</span>), <span class="pl-v">na.rm</span><span class="pl-k">=</span><span class="pl-c1">TRUE</span>)  <span class="pl-c">#omits missing values from calculation of the mean</span>
+
+<span class="pl-smi">m_mean</span> <span class="pl-k">&lt;-</span> mean(as.matrix(<span class="pl-smi">m</span>), <span class="pl-v">na.rm</span><span class="pl-k">=</span><span class="pl-c1">TRUE</span>)  <span class="pl-c">#puts calculated mean for non-missing values into a new variable</span>
+
+<span class="pl-smi">m</span> <span class="pl-k">&lt;-</span> as.matrix(<span class="pl-smi">m</span>)
+<span class="pl-k">for</span> (<span class="pl-smi">i</span> <span class="pl-k">in</span> <span class="pl-c1">1</span><span class="pl-k">:</span>length(<span class="pl-smi">m</span>)){   <span class="pl-c">#length() used to find number of values in the matrix</span>
+  <span class="pl-k">if</span> (is.na(<span class="pl-smi">m</span>[<span class="pl-smi">i</span>])){
+    <span class="pl-smi">m</span>[<span class="pl-smi">i</span>] <span class="pl-k">=</span> <span class="pl-smi">m_mean</span>      <span class="pl-c">#simple loop that adds imputed mean to missing data points</span>
+  } <span class="pl-k">else</span> {            
+    <span class="pl-smi">m</span>[<span class="pl-smi">i</span>] <span class="pl-k">=</span> <span class="pl-smi">m</span>[<span class="pl-smi">i</span>]
+  }
+}
+<span class="pl-smi">m</span></pre></div>
+
+<p>As you may have noticed in the last bit of code, I changed a matrix into a data frame for some tasks then back to a matrix. You can do this using the <code>as.xxxx</code> function, where the xxxx can be matrix, data.frame, etc... I did this because certain functions work better in either format.  Knowing which data structure to use for a given task will come with practise.</p>
+
+<hr>
+
+<h3>
+<a id="working-with-packages" class="anchor" href="#working-with-packages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Working with Packages</h3>
+
+<p>When you downloaded R, you installed a number of base packages. You can check which packages are currently installed in your environment using</p>
+
+<div class="highlight highlight-source-r"><pre>search()</pre></div>
+
+<p>You can see which packages are installed on your computer by going to the Packages tab in the bottom right console. Those with a checked box are currently active and others are not. You can load a package by clicking the box. You can also do this by typing <code>installed.packages()</code> in the interactive console.</p>
+
+<p>To download a package off CRAN, where they are stored, you can click Install in the top right corner of the Package console, and then enter the name of the package you wish to install. You can also install packages onto your computer from CRAN and then load a package into your current R environment using the command console.</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c">#install.packages("datasets")  #downloads datasets package off of CRAN </span>
+library(<span class="pl-s"><span class="pl-pds">"</span>datasets<span class="pl-pds">"</span></span>)  <span class="pl-c">#loads package into R environment</span>
+library(<span class="pl-v">help</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>datasets<span class="pl-pds">"</span></span>)  <span class="pl-c">#to find help documentation regarding specific package</span></pre></div>
+
+<p>Google is also your best friend here. Whenever I need to find something out, remembering I'm not a computer science major, I google "R {test name or task}" and there will usually be a number of pages containing code information. Some useful sites to look out for in the search are <strong>stackoverflow.com</strong>, <strong>statmethods.net</strong> ("Quick-R") and any R package documentation.</p>
+
+<hr>
+
+<h3>
+<a id="importing-exporting-and-manipulating-data" class="anchor" href="#importing-exporting-and-manipulating-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Importing, Exporting and Manipulating Data</h3>
+
+<p>Although you can create datasets in R, sometimes the easiest way to create and manage datasets (especially when you have many hundreds of data points) is in Excel and then import them into R. A USB will be passed around with some practise data. You need to save the files into your working directory. </p>
+
+<p>You can store your data as a .txt file and import that way. You have to make sure that there are equal spaces between observations (double-click on the file in your "Intro_R" folder to see for yourself).</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">prac</span> <span class="pl-k">&lt;-</span> read.table(<span class="pl-v">file</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>E:/StatsJC/IntroR_Workshop/Prac_File.txt<span class="pl-pds">"</span></span>, <span class="pl-v">header</span><span class="pl-k">=</span><span class="pl-c1">TRUE</span>)  <span class="pl-c">#read .txt file</span>
+<span class="pl-smi">prac</span></pre></div>
+
+<p>As a personal preference, I use .csv files for storing my study data. This is because I have not experienced any issues with it in R, as with some other formats. To save an Excel data file as a .csv file, you need to change the save format (drop down menu under file name) while saving your dataset. </p>
+
+<p>Below we are going to import simulated data for distanced (m) in long jump acheived pre-, at 4 weeks and 8 weeks of a weight training program. Following this, we will perform some basic tasks and then save the data as a new file name.</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">jump</span> <span class="pl-k">&lt;-</span> read.csv(<span class="pl-s"><span class="pl-pds">"</span>E:/StatsJC/IntroR_Workshop/jump.csv<span class="pl-pds">"</span></span>, <span class="pl-v">header</span><span class="pl-k">=</span><span class="pl-c1">TRUE</span>)
+<span class="pl-smi">jump</span>  <span class="pl-c">#look at dataset</span>
+head(<span class="pl-smi">jump</span>)  <span class="pl-c">#will give you the top 6 observations so you can preview what the data looks like</span>
+<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">BMI</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">weight</span><span class="pl-k">/</span>((<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">height</span><span class="pl-k">/</span><span class="pl-c1">100</span>)<span class="pl-k">^</span><span class="pl-c1">2</span>)  <span class="pl-c">#one way of creating a new variable</span></pre></div>
+
+<blockquote>
+<p>NOTE: Use <code>DataName$VariableName</code> when referring to a single variable within your assigned data frame, e.g. <code>jump$weight</code>. You can also use this convention to create a new variable within a given data frame, e.g. <code>jump$BMI</code> in above code.  </p>
+</blockquote>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">BMI2</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">weight</span><span class="pl-k">/</span>((<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">height</span><span class="pl-k">/</span><span class="pl-c1">100</span>)<span class="pl-k">^</span><span class="pl-c1">2</span>)  <span class="pl-c">#using order of operations here to "guide" calculations, e.g. parentheses 1st</span>
+<span class="pl-smi">jump</span> <span class="pl-k">&lt;-</span> cbind(<span class="pl-smi">jump</span>, <span class="pl-smi">BMI2</span>)   <span class="pl-c">#another way of creating new variables is by utilising the cbind() function</span>
+<span class="pl-smi">jump</span>  <span class="pl-c">#we can see both methods of assigning BMI are equivalent</span>
+<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">BMI</span> <span class="pl-k">&lt;-</span> round(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">BMI</span>, <span class="pl-c1">2</span>)  <span class="pl-c">#rounds the BMI variable to 2 decimal places</span>
+<span class="pl-smi">jump</span>
+<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">BMI2</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">NULL</span>  <span class="pl-c">#drops the BMI2 variable as we don't need it, BMI is equivalent</span>
+<span class="pl-smi">jump</span>
+<span class="pl-smi">ave_dist</span> <span class="pl-k">&lt;-</span> c(mean(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">base</span>), mean(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">wave1</span>), mean(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">wave2</span>))  <span class="pl-c">#creates new vector containing means</span>
+<span class="pl-smi">ave_dist2</span> <span class="pl-k">&lt;-</span> as.vector(c(colMeans(<span class="pl-smi">jump</span>[,<span class="pl-c1">5</span><span class="pl-k">:</span><span class="pl-c1">7</span>])))  <span class="pl-c">#same using colMeans function</span>
+
+<span class="pl-smi">ave_dist</span>[<span class="pl-c1">1</span>] <span class="pl-k">==</span> <span class="pl-smi">ave_dist2</span>[<span class="pl-c1">1</span>]  <span class="pl-c">#checking 1st value in vector equivalent in both using a logical operator</span>
+<span class="pl-smi">sd_dist</span> <span class="pl-k">&lt;-</span> c(sd(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">base</span>), sd(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">wave1</span>), sd(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">wave2</span>))
+<span class="pl-smi">ave_improve</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">ave_dist</span>[<span class="pl-c1">3</span>] <span class="pl-k">-</span> <span class="pl-smi">ave_dist</span>[<span class="pl-c1">1</span>]
+<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">diff</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">wave2</span> <span class="pl-k">-</span> <span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">base</span>
+
+<span class="pl-k">for</span> (<span class="pl-smi">i</span> <span class="pl-k">in</span> <span class="pl-c1">1</span><span class="pl-k">:</span>nrow(<span class="pl-smi">jump</span>)){                    <span class="pl-c">#this is a bit more complicated but we're</span>
+  <span class="pl-k">if</span>(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">diff</span>[<span class="pl-smi">i</span>] <span class="pl-k">&gt;</span> <span class="pl-smi">ave_improve</span>){           <span class="pl-c">#creating a new variable for responder vs non-responder</span>
+    <span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">respond</span>[<span class="pl-smi">i</span>]<span class="pl-k">=</span><span class="pl-c1">1</span>                       <span class="pl-c">#to the exercise program using the mean as an arbitary cut-off</span>
+    } <span class="pl-k">else</span> {
+      <span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">respond</span>[<span class="pl-smi">i</span>]<span class="pl-k">=</span><span class="pl-c1">0</span>
+    }
+}
+<span class="pl-smi">jump</span>
+
+levels(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">respond</span>)  <span class="pl-c">#check if our respond variable is a factor (compare groups)</span>
+<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">respond</span> <span class="pl-k">&lt;-</span> as.factor(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">respond</span>)  <span class="pl-c">#change to factor then check again</span>
+levels(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">respond</span>)
+boxplot(<span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">diff</span><span class="pl-k">~</span><span class="pl-smi">jump</span><span class="pl-k">$</span><span class="pl-smi">respond</span>, <span class="pl-v">main</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>Improvement in Long-Jump Distance<span class="pl-pds">"</span></span>, <span class="pl-v">names</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>Non-Responders<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Responders<span class="pl-pds">"</span></span>), <span class="pl-v">ylab</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>Distance in Metres<span class="pl-pds">"</span></span>)   <span class="pl-c">#simple boxplot comparing improvement in long-jump distance between responders and non-responders</span>
+</pre></div>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c">#write.table(file="E/StatsJC/IntroR_Workshop/Prac_File.txt", header=TRUE, row.names=FALSE)  #save as .txt</span>
+<span class="pl-c">#write.csv(jump, "E:/StatsJC/IntroR_Workshop/jump_160222.csv", row.names=FALSE)  #save as .csv</span></pre></div>
+
+<p>Don't worry about trying to remember every function in R. You can simply look them up on google, or if you can remember the start of the function's name, use the <code>tab</code> completion in RStudio. </p>
+
+<p>Try typing <code>col</code> in the interactive console then press <code>tab</code> and navigate with the down key until you see a function called <code>colors</code>. You will find before you press enter that there is information regarding what the function does and its options.  </p>
+
+<p>This is one advantage that RStudio has over R on its own: it has autocompletion abilities that allow you to more easily look up functions, their arguments, and the values that they take.</p>
+
+<hr>
+
+<h3>
+<a id="thats-all-folks" class="anchor" href="#thats-all-folks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>That's all folks!!!</h3>
+
+<p>Thank you for coming down today and participating in this workshop. This was developed and run out of my own time, and I did it because I have had so many people express interest in learning R. Much of what I showed you today has been self-taught (i.e. it is not impossible to learn). I have learnt by getting on R in my own time, as well as participating in workshops when I can and completing online MOOCs. There is always more to learn and you will learn the same thing slighty differently off of different people, and in turn develop your own flavour of coding.   </p>
+
+<p>If you ever get stuck, please feel free to flick me an email on <a href="mailto:a.russell@ecu.edu.au">a.russell@ecu.edu.au</a> </p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/AlyceRussell">AlyceRussell</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
